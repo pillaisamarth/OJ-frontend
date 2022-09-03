@@ -7,25 +7,26 @@ import Row from 'react-bootstrap/Row';
 import Button from 'react-bootstrap/Button';
 import { Formik, useFormik , Field} from 'formik';
 import * as Yup from 'yup';
+import ProblemlistComponent from './ProblemlistComponent';
 
 const SubmitForm = ({problem}) => {
     const formik = useFormik({
         initialValues:{
             submittedFile: '',
-            language: '',
+            language: 'cpp',
         },
         validationSchema: Yup.object({
             submittedFile: Yup.mixed().required('Required'),
             language: Yup.string().required('Required')
         }),
         onSubmit: values => {
-            alert(values)
+            alert(JSON.stringify(values, null, 2));
         }
     });
     return (
         <div className='submit-form'>
             <Form onSubmit={formik.handleSubmit}>
-                <Form.Group as={Row} className="mb-3" controlId='submitForm'>
+                <Form.Group as={Row} className="mb-3" controlId='submittedFile'>
                     <Col sm='6'>
                         <Form.Control 
                         type='file'
@@ -38,18 +39,21 @@ const SubmitForm = ({problem}) => {
                             <div>{formik.errors.submittedFile}</div>
                         ): null}
                     </Col>
-                    {/* <Col sm='3'>
-                        <Form.Select>
+                    <Col sm='3'>
+                        <Form.Select
+                        name='language'
+                        onChange={formik.handleChange}
+                        value={formik.values.language}>
                             {
                                 problem.languages.map((language)=>(
-                                    <option>{language[1]}</option>
+                                    <option value={language[0]}>{language[1]}</option>
                                 ))
                             }
                         </Form.Select>
-                        {errors.language && touched.language ? (
-                            <div>{errors.language}</div>
+                        {formik.errors.language && formik.touched.language ? (
+                            <div>{formik.errors.language}</div>
                         ) : null}
-                    </Col> */}
+                    </Col>
                     <Col>
                         <Button type="submit" variant="outline-dark">Submit</Button>
                     </Col>
@@ -58,7 +62,6 @@ const SubmitForm = ({problem}) => {
         </div>
     )
 }
-
 
 function ProblemDetailComponent({problemId}) {
     const [problem, setProblem] = React.useState(null);
@@ -71,7 +74,6 @@ function ProblemDetailComponent({problemId}) {
             setProblem(data);
         });
     }, [])
-    console.log(problem);
     if(problem != null)
     return (
             <div>
