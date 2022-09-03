@@ -5,81 +5,40 @@ import Form from 'react-bootstrap/Form';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Button from 'react-bootstrap/Button';
-import { useFormik } from 'formik';
+import { Formik, useFormik , Field} from 'formik';
 import * as Yup from 'yup';
 
-
-
 const SubmitForm = ({problem}) => {
-
-    const [random, setRandom] = useState(null);
     const formik = useFormik({
-        initialValues: {
-          firstName: '',
-          lastName: '',
-          email: '',
+        initialValues:{
+            submittedFile: '',
+            language: '',
         },
+        validationSchema: Yup.object({
+            submittedFile: Yup.mixed().required('Required'),
+            language: Yup.string().required('Required')
+        }),
         onSubmit: values => {
-          alert(JSON.stringify(values, null, 2));
-        },
-      });
-
-    // const formik = useFormik({
-    //     initialValues: {
-    //         uploadedFile : '',
-    //         language : '',
-    //     },
-    //     validationSchema: Yup.object().shape({
-    //         uploadedFile : Yup.mixed().required(),
-    //         language : Yup.string().required(),
-    //     }),
-    //     onSubmit: values => {
-    //         axios.post(`${Urls.submitbase}${problem.pk}`, values);
-    //     }
-    // });
-
-    // const formik = useFormik({
-    //     initialValues: {
-    //       firstName: '',
-    //       lastName: '',
-    //       email: '',
-    //     },
-    //     validationSchema: Yup.object({
-    //       firstName: Yup.string()
-    //         .max(15, 'Must be 15 characters or less')
-    //         .required('Required'),
-    //       lastName: Yup.string()
-    //         .max(20, 'Must be 20 characters or less')
-    //         .required('Required'),
-    //       email: Yup.string().email('Invalid email address').required('Required'),
-    //     }),
-    //     onSubmit: values => {
-    //       alert(JSON.stringify(values, null, 2));
-    //     },
-    //   });
-
-
+            alert(values)
+        }
+    });
     return (
         <div className='submit-form'>
-            <Form>
-                <Form.Group as={Row} className="mb-3" controlId="formPlaintextPassword">
-                    {/* <Col sm="6">
+            <Form onSubmit={formik.handleSubmit}>
+                <Form.Group as={Row} className="mb-3" controlId='submitForm'>
+                    <Col sm='6'>
                         <Form.Control 
-                        type="file" 
-                        required
+                        type='file'
+                        id='submittedFile'
+                        name='submittedFile'
                         onChange={formik.handleChange}
-                        onBlur = {formik.handleBlur}
-                        value={formik.values.uploadedFile}/>
-                        
-                            {formik.touched.uploadedFile && formik.errors.uploadedFile ? 
-                            (
-                                <Form.Control.Feedback type="invalid" tooltip>
-                                    {formik.errors.uploadedFile}
-                                </Form.Control.Feedback>
-                            ) : null}
-                        
-                    </Col> */}
-                    <Col sm="3">
+                        value={formik.values.submittedFile}
+                        />
+                        {formik.errors.submittedFile && formik.touched.submittedFile ? (
+                            <div>{formik.errors.submittedFile}</div>
+                        ): null}
+                    </Col>
+                    {/* <Col sm='3'>
                         <Form.Select>
                             {
                                 problem.languages.map((language)=>(
@@ -87,16 +46,17 @@ const SubmitForm = ({problem}) => {
                                 ))
                             }
                         </Form.Select>
-                    </Col>
+                        {errors.language && touched.language ? (
+                            <div>{errors.language}</div>
+                        ) : null}
+                    </Col> */}
                     <Col>
                         <Button type="submit" variant="outline-dark">Submit</Button>
                     </Col>
                 </Form.Group>
-
             </Form>
         </div>
-                    
-    );
+    )
 }
 
 

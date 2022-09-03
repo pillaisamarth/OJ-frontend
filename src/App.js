@@ -6,7 +6,7 @@ import NavbarComponent from './Routes/Components/NavbarComponent';
 import SubmissionTableComponent from './Routes/Components/SubmissionTableComponent';
 
 
-const baseURL="http://127.0.0.1:8000/judge/problemlist/"
+const baseURL="http://192.168.29.36:8000/judge/problemlist/"
 
 function App(props) {
   
