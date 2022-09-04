@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
 import ProblemDetailComponent from './ProblemDetailComponent';
@@ -7,9 +7,12 @@ import {useParams} from 'react-router-dom';
 
 function ProblemPageComponent(props) {
     let params = useParams();
+    const [key, setKey] = useState(params.eventKey)
     return (
         <Tabs
-        defaultActiveKey="problem"
+        defaultActiveKey= 'problem'
+        activeKey={key}
+        onSelect={(k) => setKey(k)}
         id="fill-tab-example"
         className="mb-5"
         fill

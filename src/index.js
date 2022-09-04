@@ -22,7 +22,7 @@ root.render(
   <Routes>
       <Route path="/" element={<App />}>
         <Route path="" element={<ProblemlistComponent />} />
-        <Route path="problem/:problemId" element={
+        <Route path="problem/:problemId/:eventKey" element={
           <ProblemPageComponent />
         } />
 

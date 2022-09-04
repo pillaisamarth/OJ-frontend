@@ -9,7 +9,7 @@ const Problem = ({pk, title, difficulty}) => {
         <tr>
             <td style={{textAlign:'center'}}>{pk}</td>
             <td>
-                <Link to = {`problem/${pk}`}>
+                <Link to = {`problem/${pk}/mysubmissions`}>
                     {title}
                 </Link>
             </td>

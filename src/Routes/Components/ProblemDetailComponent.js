@@ -10,19 +10,39 @@ import * as Yup from 'yup';
 import ProblemlistComponent from './ProblemlistComponent';
 
 const SubmitForm = ({problem}) => {
+    const [submittedFile, setSubmittedFile] = useState();
     const formik = useFormik({
         initialValues:{
-            submittedFile: '',
             language: 'cpp',
+            id: problem.id,
         },
         validationSchema: Yup.object({
-            submittedFile: Yup.mixed().required('Required'),
-            language: Yup.string().required('Required')
+            language: Yup.string().required('Required'),
         }),
         onSubmit: values => {
-            alert(JSON.stringify(values, null, 2));
+            
+            console.log(submittedFile);
+            const formData = new FormData();
+            formData.append('submittedFile', submittedFile);
+            formData.append('id', values.id)
+            formData.append('language', values.language);
+            const config = {
+                headers:{
+                    'content-type': 'multipart/form-data'
+                }
+            }
+            // alert(JSON.stringify(values, null, 2));
+            axios.post(Urls.submitbase, formData, config)
+            .then(response => {
+                console.log(response)
+            })
         }
+        
     });
+    
+    function handleChange(event){
+        setSubmittedFile(event.target.files[0])
+    }
     return (
         <div className='submit-form'>
             <Form onSubmit={formik.handleSubmit}>
@@ -32,12 +52,9 @@ const SubmitForm = ({problem}) => {
                         type='file'
                         id='submittedFile'
                         name='submittedFile'
-                        onChange={formik.handleChange}
-                        value={formik.values.submittedFile}
+                        onChange={handleChange}
+                        required
                         />
-                        {formik.errors.submittedFile && formik.touched.submittedFile ? (
-                            <div>{formik.errors.submittedFile}</div>
-                        ): null}
                     </Col>
                     <Col sm='3'>
                         <Form.Select
@@ -74,6 +91,7 @@ function ProblemDetailComponent({problemId}) {
             setProblem(data);
         });
     }, [])
+    console.log(problem);
     if(problem != null)
     return (
             <div>
