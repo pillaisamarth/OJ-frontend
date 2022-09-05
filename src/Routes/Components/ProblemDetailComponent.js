@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import Urls from '../../Config/Urls';
 import Form from 'react-bootstrap/Form';
@@ -9,12 +10,15 @@ import { Formik, useFormik , Field} from 'formik';
 import * as Yup from 'yup';
 import ProblemlistComponent from './ProblemlistComponent';
 
-const SubmitForm = ({problem}) => {
+
+const SubmitForm = ({problem, key, onChange}) => {
     const [submittedFile, setSubmittedFile] = useState();
+    let navigate = useNavigate()
     const formik = useFormik({
         initialValues:{
             language: 'cpp',
-            id: problem.id,
+            problemId: problem.id,
+            id: -1,
         },
         validationSchema: Yup.object({
             language: Yup.string().required('Required'),
@@ -24,18 +28,28 @@ const SubmitForm = ({problem}) => {
             console.log(submittedFile);
             const formData = new FormData();
             formData.append('submittedFile', submittedFile);
-            formData.append('id', values.id)
+            formData.append('problemId', values.problemId)
             formData.append('language', values.language);
+
             const config = {
                 headers:{
                     'content-type': 'multipart/form-data'
                 }
             }
+            console.log(submittedFile);
+            console.log(values.id);
             // alert(JSON.stringify(values, null, 2));
             axios.post(Urls.submitbase, formData, config)
             .then(response => {
-                console.log(response)
+                values.id = response.data.id;
+                console.log(response.data);
             })
+            .then(() => {
+                console.log('heeh');
+                console.log(key);
+                onChange('mysubmissions');
+            });
+            
         }
         
     });
