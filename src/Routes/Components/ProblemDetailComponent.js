@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from "react-router-dom";
+import { Link,useNavigate } from "react-router-dom";
 import axios from 'axios';
 import Urls from '../../Config/Urls';
 import Form from 'react-bootstrap/Form';
@@ -11,9 +11,12 @@ import * as Yup from 'yup';
 import ProblemlistComponent from './ProblemlistComponent';
 
 
-const SubmitForm = ({problem, key, onChange}) => {
+const SubmitForm = ({problem, onChange}) => {
     const [submittedFile, setSubmittedFile] = useState();
     let navigate = useNavigate()
+    function handleKeyChange(newKey){
+        onChange(newKey);
+    }
     const formik = useFormik({
         initialValues:{
             language: 'cpp',
@@ -46,8 +49,7 @@ const SubmitForm = ({problem, key, onChange}) => {
             })
             .then(() => {
                 console.log('heeh');
-                console.log(key);
-                onChange('mysubmissions');
+                handleKeyChange('mysubmissions');
             });
             
         }
@@ -85,6 +87,7 @@ const SubmitForm = ({problem, key, onChange}) => {
                             <div>{formik.errors.language}</div>
                         ) : null}
                     </Col>
+
                     <Col>
                         <Button type="submit" variant="outline-dark">Submit</Button>
                     </Col>
@@ -94,7 +97,7 @@ const SubmitForm = ({problem, key, onChange}) => {
     )
 }
 
-function ProblemDetailComponent({problemId}) {
+function ProblemDetailComponent({problemId, onChange}) {
     const [problem, setProblem] = React.useState(null);
     
 
@@ -114,7 +117,7 @@ function ProblemDetailComponent({problemId}) {
                 <p className='problem-statement'>
                     {problem.statement}
                 </p>
-                <SubmitForm problem={problem} />
+                <SubmitForm problem={problem} onChange={onChange} />
             </div>
 
     );

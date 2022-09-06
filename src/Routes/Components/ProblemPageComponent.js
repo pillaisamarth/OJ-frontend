@@ -8,7 +8,9 @@ import {useNavigate, useParams} from 'react-router-dom';
 function ProblemPageComponent(props) {
     let params = useParams();
     const [key, setKey] = useState(params.eventKey)
-    const handleChange = useCallback(({newValue}) => setKey(newValue), []);
+    function handleChange(newKey) {
+        setKey(newKey);
+    }
     let navigate = useNavigate()
     return (
         <Tabs
@@ -20,7 +22,7 @@ function ProblemPageComponent(props) {
         fill
         >
         <Tab eventKey="problem" title="Problem">
-            <ProblemDetailComponent problemId={params.problemId} key={key} onChange={handleChange}/>
+            <ProblemDetailComponent problemId={params.problemId} onChange={handleChange}/>
         </Tab>
         <Tab eventKey="allsubmissions" title="All Submissions">
             <SubmissionTableComponent problemId={params.problemId}  key={key} onChange={handleChange}/>

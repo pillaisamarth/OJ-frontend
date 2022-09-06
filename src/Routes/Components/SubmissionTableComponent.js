@@ -29,7 +29,7 @@ function SubmissionTableComponent({problemId}) {
 
     React.useEffect(() => {
         let data;
-        axios.get(`${Urls.submissionsbase}${problemId}/${page}`).then((response) =>{
+        axios.get(`${Urls.submissionsbase}${problemId}?page=${page}`).then((response) =>{
             data = response.data;
             setSubmissions(data);
         });
@@ -70,8 +70,8 @@ function SubmissionTableComponent({problemId}) {
             {
                 submissions != null && 
                 submissions.map((submission) => (
-                    <SubmissionTableRow pk = {submission.pk}
-                    problem_title={submission.problem_title} verdict={submission.verdict}
+                    <SubmissionTableRow pk = {submission.id}
+                    problem_title={submission.problem.title} verdict={submission.verdict}
                     submitted_at={submission.submitted_at} language={submission.language}/>
                 ))
             }
