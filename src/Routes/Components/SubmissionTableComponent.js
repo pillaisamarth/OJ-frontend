@@ -11,12 +11,13 @@ const SubmissionTableRow = ({pk, problem_title, verdict, submitted_at, language}
     }else{
         color = 'red';
     }
+    console.log(verdict);
     return (
         <tr>
             <td className='center-table-component'>{pk}</td>
             <td className='center-table-component'>{problem_title}</td>
-            <td className='center-table-component' style={{color:color}}>{verdict}</td>
             <td className='center-table-component'>{language}</td>
+            <td className='center-table-component' style={{color:color}}>{verdict}</td>
             <td className='center-table-component'>{submitted_at}</td>
         </tr>
     );
@@ -32,13 +33,16 @@ function SubmissionTableComponent({problemId}) {
         axios.get(`${Urls.submissionsbase}${problemId}?page=${page}`).then((response) =>{
             data = response.data;
             setSubmissions(data);
+            console.log(submissions[0].numberOfPages);
         });
     }, [page])
-
     let items = [];
+    console.log(submissions);
     let active = page;
     if(submissions != null){
-        let numPages = submissions.length / 10 +  1;
+        let numPages = submissions[0].numberOfPages;
+        console.log(submissions.numberOfPages);
+
         console.log(submissions[0].language);
         for(let number = 1; number <= numPages; number++){
             console.log("Hello");
@@ -50,6 +54,8 @@ function SubmissionTableComponent({problemId}) {
             );
         }
     }
+
+    console.log(items);
 
     
 
@@ -71,14 +77,14 @@ function SubmissionTableComponent({problemId}) {
                 submissions != null && 
                 submissions.map((submission) => (
                     <SubmissionTableRow pk = {submission.id}
-                    problem_title={submission.problem.title} verdict={submission.verdict}
+                    problem_title={submission.title} verdict={submission.verdict}
                     submitted_at={submission.submitted_at} language={submission.language}/>
                 ))
             }
             
         </tbody>
     </Table>
-    <Pagination bsPrefix = 'pagination'>{items}</Pagination>
+    <Pagination>{items}</Pagination>
         </>
     );
 }
