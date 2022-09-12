@@ -46,10 +46,11 @@ const SubmitForm = ({problem, onChange}) => {
             .then(response => {
                 values.id = response.data.id;
                 console.log(response.data);
+                handleKeyChange('allsubmissions')
             })
             .then(() => {
-                console.log('heeh');
-                handleKeyChange('mysubmissions');
+                formData.append('id', values.id);
+                axios.post(Urls.submitbase, formData, config);
             });
             
         }

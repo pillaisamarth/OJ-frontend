@@ -4,17 +4,21 @@ import Table from 'react-bootstrap/Table';
 import Urls from '../../Config/Urls';
 import Pagination from 'react-bootstrap/Pagination';
 
-const SubmissionTableRow = ({pk, problem_title, verdict, submitted_at, language}) => {
+const SubmissionTableRow = ({pk, problem_title, verdict, submitted_at, language, user}) => {
     let color;
     if(verdict == 'AC'){
         color = 'green';
-    }else{
+    }else if(verdict == 'Running'){
+        color = 'blue';
+    }
+    else{
         color = 'red';
     }
     console.log(verdict);
     return (
         <tr>
             <td className='center-table-component'>{pk}</td>
+            <td className='center-table-component'>{user}</td>
             <td className='center-table-component'>{problem_title}</td>
             <td className='center-table-component'>{language}</td>
             <td className='center-table-component' style={{color:color}}>{verdict}</td>
@@ -39,7 +43,7 @@ function SubmissionTableComponent({problemId}) {
     let items = [];
     console.log(submissions);
     let active = page;
-    if(submissions != null){
+    if(submissions != null && submissions.length > 0){
         let numPages = submissions[0].numberOfPages;
         console.log(submissions.numberOfPages);
 
@@ -66,6 +70,7 @@ function SubmissionTableComponent({problemId}) {
         <thead>
             <tr>
             <th className='center-table-component'>#</th>
+            <th className='center-table-component'>User</th>
             <th className='center-table-component'>Problem</th>
             <th className='center-table-component'>Language</th>
             <th className='center-table-component'>Verdict</th>
@@ -78,7 +83,8 @@ function SubmissionTableComponent({problemId}) {
                 submissions.map((submission) => (
                     <SubmissionTableRow pk = {submission.id}
                     problem_title={submission.title} verdict={submission.verdict}
-                    submitted_at={submission.submitted_at} language={submission.language}/>
+                    submitted_at={submission.submitted_at} language={submission.language}
+                    user={submission.user}/>
                 ))
             }
             

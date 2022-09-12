@@ -13,7 +13,8 @@
 }
 
 .form-box{
-  margin-top: 200px;
+  margin-top: 10%;
+
 }
 
 .sign-button{
@@ -68,5 +69,12 @@ a:active, a:visited{
 
 .pagination{
   margin-left: 50%;
+}
+
+.error-message{
+  margin-bottom: 10px;
+  font-size: small;
+  /* font-size: medium; */
+  color: red;
 }
 

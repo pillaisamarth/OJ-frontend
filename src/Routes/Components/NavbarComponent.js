@@ -15,7 +15,7 @@ function NavbarComponent() {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
             <Nav.Link as={Link} to=''>ProblemList</Nav.Link>
-            <Nav.Link href="#link">Link</Nav.Link>
+            {/* <Nav.Link href="#link">Link</Nav.Link>
             <NavDropdown title="Dropdown" id="basic-nav-dropdown">
               <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
               <NavDropdown.Item href="#action/3.2">
@@ -26,10 +26,10 @@ function NavbarComponent() {
               <NavDropdown.Item href="#action/3.4">
                 Separated link
               </NavDropdown.Item>
-            </NavDropdown>
+            </NavDropdown> */}
           </Nav>
           <Nav>
-            <Nav.Link href="#sm">Current User</Nav.Link>
+            <Nav.Link as={Link} to='/login'>Current User</Nav.Link>
             <Nav.Link href="sm">Logout</Nav.Link>
           </Nav>
         </Navbar.Collapse>

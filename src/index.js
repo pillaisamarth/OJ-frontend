@@ -25,6 +25,12 @@ root.render(
         <Route path="problem/:problemId/:eventKey" element={
           <ProblemPageComponent />
         } />
+        <Route path="login/" element={
+          <LoginFormComponent/>
+        } />
+        <Route path="register/" element={
+          <RegisterFormComponent/>
+        } />
 
         
         
