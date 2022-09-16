@@ -5,8 +5,12 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import NavItem from 'react-bootstrap/NavItem';
 import Urls from '../../Config/Urls';
 import {Link} from 'react-router-dom';
+import { handleLogout } from '../../Config/Utils';
+import { useState } from 'react';
 
 function NavbarComponent() {
+  const [loginOrUser, setLoginOrUser] = useState();
+  const [logoutOrRegister, setLogoutOrUser] = useState();
   return (
     <Navbar bg="dark" expand="lg" variant='dark'>
       {/* <Container> */}
@@ -30,7 +34,7 @@ function NavbarComponent() {
           </Nav>
           <Nav>
             <Nav.Link as={Link} to='/login'>Current User</Nav.Link>
-            <Nav.Link href="sm">Logout</Nav.Link>
+            <Nav.Link as={Link} to='/login' onClick={handleLogout}>Logout</Nav.Link>
           </Nav>
         </Navbar.Collapse>
       {/* </Container> */}

@@ -5,10 +5,13 @@ import Row from 'react-bootstrap/Row';
 import { useFormik, yupToFormErrors } from 'formik';
 import * as Yup from 'yup';
 import '../../css/style.css'
+import { Link, useNavigate } from 'react-router-dom';
 import { Error } from '../../Config/Utils';
+import { axiosInstance } from '../../Config/axiosApi';
 
 
 function LoginFormComponent() {
+  const navigate = useNavigate();
   const formik = useFormik({
     initialValues: {
       username : '',
@@ -21,7 +24,21 @@ function LoginFormComponent() {
       .required('No password provided'),
     }),
     onSubmit : values => {
-      alert(JSON.stringify(values, null, 2));
+      // alert(JSON.stringify(values, null, 2));
+      axiosInstance.post('/token/obtain/', {
+        username:values.username,
+        password:values.password
+      })
+      .then(response => {
+        axiosInstance.defaults.headers['Authorization'] = "JWT " + response.data.access;
+        localStorage.setItem('access_token', response.data.access);
+        localStorage.setItem('refresh_token', response.data.refresh);
+        navigate("/");
+        console.log(response);
+      })
+      .catch(error => {
+        throw error;
+      })
     }
   })
   return (

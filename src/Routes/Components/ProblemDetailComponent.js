@@ -9,10 +9,12 @@ import Button from 'react-bootstrap/Button';
 import { Formik, useFormik , Field} from 'formik';
 import * as Yup from 'yup';
 import ProblemlistComponent from './ProblemlistComponent';
+import { UnautherizedError } from '../../Config/Utils';
 
 
 const SubmitForm = ({problem, onChange}) => {
     const [submittedFile, setSubmittedFile] = useState();
+    const [isError, setIsError] = useState(false);
     let navigate = useNavigate()
     function handleKeyChange(newKey){
         onChange(newKey);
@@ -49,9 +51,18 @@ const SubmitForm = ({problem, onChange}) => {
                 handleKeyChange('allsubmissions')
             })
             .then(() => {
+                console.log("here!");
                 formData.append('id', values.id);
                 axios.post(Urls.submitbase, formData, config);
+            })
+            .catch((errors) => {
+                if(errors.response.status == 401 && errors.response.statusText === 'Unauthorized'){
+                    console.log(errors);
+                    console.log("here Too");
+                    setIsError(true);
+                }
             });
+            
             
         }
         
@@ -94,6 +105,7 @@ const SubmitForm = ({problem, onChange}) => {
                     </Col>
                 </Form.Group>
             </Form>
+            <UnautherizedError show={isError} setShow={setIsError}/>
         </div>
     )
 }
