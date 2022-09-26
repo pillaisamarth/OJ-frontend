@@ -6,12 +6,13 @@ import { useFormik, yupToFormErrors } from 'formik';
 import * as Yup from 'yup';
 import '../../css/style.css'
 import { Link, useNavigate } from 'react-router-dom';
-import { Error } from '../../Config/Utils';
+import { checkLogin, Error, GeneralError } from '../../Config/Utils';
 import { axiosInstance } from '../../Config/axiosApi';
-
+import {useState} from 'react'
 
 function LoginFormComponent() {
   const navigate = useNavigate();
+  const [isError, setIsError] = useState(false);
   const formik = useFormik({
     initialValues: {
       username : '',
@@ -35,9 +36,12 @@ function LoginFormComponent() {
         localStorage.setItem('refresh_token', response.data.refresh);
         navigate("/");
         console.log(response);
+        window.location.reload(true);
       })
       .catch(error => {
-        throw error;
+        if(error.response.status == 401 && error.response.statusText === 'Unauthorized'){
+          setIsError(true);
+        }
       })
     }
   })
@@ -75,6 +79,7 @@ function LoginFormComponent() {
           <Button type="submit" variant="dark" className='sign-button'>Sign in</Button>
         </Col>
       </Form.Group>
+      <GeneralError show={isError} setShow={setIsError} title="Invalid Details" body="Try again!"/>
     </Form>
   );
 }

@@ -9,7 +9,7 @@ import Button from 'react-bootstrap/Button';
 import { Formik, useFormik , Field} from 'formik';
 import * as Yup from 'yup';
 import ProblemlistComponent from './ProblemlistComponent';
-import { UnautherizedError } from '../../Config/Utils';
+import { GeneralError } from '../../Config/Utils';
 
 
 const SubmitForm = ({problem, onChange}) => {
@@ -105,7 +105,7 @@ const SubmitForm = ({problem, onChange}) => {
                     </Col>
                 </Form.Group>
             </Form>
-            <UnautherizedError show={isError} setShow={setIsError}/>
+            <GeneralError show={isError} setShow={setIsError} title="Unauthorized" body="Login to continue"/>
         </div>
     )
 }

@@ -5,12 +5,24 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import NavItem from 'react-bootstrap/NavItem';
 import Urls from '../../Config/Urls';
 import {Link} from 'react-router-dom';
-import { handleLogout } from '../../Config/Utils';
-import { useState } from 'react';
+import { handleLogout, checkLogin } from '../../Config/Utils';
+import { useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
 
 function NavbarComponent() {
-  const [loginOrUser, setLoginOrUser] = useState();
-  const [logoutOrRegister, setLogoutOrUser] = useState();
+  const navigate = useNavigate();
+  const [firstElement, setFirstElement] = useState('Login');
+  const [secondElement, setSecondElement] = useState('Register');
+  React.useEffect(() => {
+      checkLogin(setFirstElement,setSecondElement);
+  }, []);
+  const handleLogoutClick = () => {
+    handleLogout();
+    // checkLogin(setFirstElement, setSecondElement);
+    // window.location.reload(true);
+    setFirstElement('Login');
+    setSecondElement('Register');
+  }
   return (
     <Navbar bg="dark" expand="lg" variant='dark'>
       {/* <Container> */}
@@ -33,8 +45,23 @@ function NavbarComponent() {
             </NavDropdown> */}
           </Nav>
           <Nav>
-            <Nav.Link as={Link} to='/login'>Current User</Nav.Link>
-            <Nav.Link as={Link} to='/login' onClick={handleLogout}>Logout</Nav.Link>
+            {firstElement === 'Login' ? (
+              <Nav.Link as={Link} to = '/login' >{firstElement}</Nav.Link>
+            ) : (
+              <Nav.Link>{firstElement}</Nav.Link>
+            )}
+            {/* {secondElement === 'Register' ? (
+              <Nav.Link as={Link} to='' onClick={handleLogout}>{secondElement}</Nav.Link>
+            ) : (
+              <Nav.Link as={Link} to='' onClick={handleLogout}>{secondElement}</Nav.Link>
+            )} */}
+            {/* <Nav.Link as={Link} to='/login'>{firstElement}</Nav.Link> */}
+            {secondElement === 'Register' ? (
+              <Nav.Link as={Link} to = '/register'>{secondElement}</Nav.Link>
+            ) : (
+              <Nav.Link as = {Link} to='/logout' onClick={handleLogoutClick}>{secondElement}</Nav.Link>
+            )}
+            {/* <Nav.Link as={Link} to='/logout' onClick={handleLogoutClick}>Logout</Nav.Link> */}
           </Nav>
         </Navbar.Collapse>
       {/* </Container> */}

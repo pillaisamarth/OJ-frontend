@@ -15,6 +15,7 @@ import ProblemlistComponent from './Routes/Components/ProblemlistComponent';
 import ProblemDetailComponent from './Routes/Components/ProblemDetailComponent';
 import { LoginFormComponent, RegisterFormComponent } from './Routes/Components/FormComponent';
 import ProblemPageComponent from './Routes/Components/ProblemPageComponent';
+import { LogOut } from './Config/Utils';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -25,11 +26,15 @@ root.render(
         <Route path="problem/:problemId/:eventKey" element={
           <ProblemPageComponent />
         } />
-        <Route path="login/" element={
+        <Route path="login/" 
+        element={
           <LoginFormComponent/>
         } />
         <Route path="register/" element={
           <RegisterFormComponent/>
+        } />
+        <Route path="logout/" element={
+          <LogOut />
         } />
 
         
